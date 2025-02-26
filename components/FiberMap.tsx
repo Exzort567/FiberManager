@@ -5,9 +5,7 @@ import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
 
 // ✅ Lazy load `MapContainer` (disable SSR)
-const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), {
-  ssr: false, // ✅ Prevents Next.js from rendering on the server
-});
+const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), { ssr: false });
 
 // ✅ Define Fiber Type
 interface Fiber {
@@ -20,8 +18,10 @@ interface Fiber {
 
 export default function FiberMap() {
   const [fibers, setFibers] = useState<Fiber[]>([]);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     fetch("https://fibermanager.onrender.com/api/fibers") // API route
       .then((res) => res.json())
       .then((data: Fiber[]) => setFibers(data));

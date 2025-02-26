@@ -1,17 +1,10 @@
 "use client"; // ✅ Ensures this component runs only in the browser
+import dynamic from "next/dynamic";
 
-import { useEffect, useState } from "react";
-import FiberMap from "../../components/FiberMap";
+// ✅ Lazy load FiberMap and disable SSR
+const FiberMap = dynamic(() => import("../../components/FiberMap"), { ssr: false });
 
 export default function Home() {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true); // ✅ Only sets this in the browser
-  }, []);
-
-  if (!isClient) return <p>Loading...</p>; // ✅ Prevents SSR errors
-
   return (
     <div className="h-screen">
       <FiberMap />
