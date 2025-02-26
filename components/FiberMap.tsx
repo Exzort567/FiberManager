@@ -1,7 +1,13 @@
 "use client";
-import { MapContainer, TileLayer, Polyline, Popup } from "react-leaflet";
+import dynamic from "next/dynamic"; // ✅ Import dynamic for SSR handling
+import { TileLayer, Polyline, Popup } from "react-leaflet";
 import { useEffect, useState } from "react";
 import "leaflet/dist/leaflet.css";
+
+// ✅ Lazy load `MapContainer` (disable SSR)
+const MapContainer = dynamic(() => import("react-leaflet").then((mod) => mod.MapContainer), {
+  ssr: false, // ✅ Prevents Next.js from rendering on the server
+});
 
 // ✅ Define Fiber Type
 interface Fiber {
@@ -20,7 +26,6 @@ export default function FiberMap() {
       .then((res) => res.json())
       .then((data: Fiber[]) => setFibers(data));
   }, []);
-  
 
   return (
     <MapContainer
@@ -33,7 +38,7 @@ export default function FiberMap() {
       {fibers.map((fiber) => (
         <Polyline
           key={fiber.fiberID}
-          positions={fiber.coordinates.map(coord => [coord.lat, coord.lng] as [number, number])}
+          positions={fiber.coordinates.map((coord) => [coord.lat, coord.lng] as [number, number])}
           pathOptions={{ color: fiber.status === "Running" ? "green" : "red" }}
         >
           <Popup>
