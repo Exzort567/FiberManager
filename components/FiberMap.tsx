@@ -18,10 +18,8 @@ interface Fiber {
 
 export default function FiberMap() {
   const [fibers, setFibers] = useState<Fiber[]>([]);
-  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
-    setIsClient(true);
     fetch("https://fibermanager.onrender.com/api/fibers") // API route
       .then((res) => res.json())
       .then((data: Fiber[]) => setFibers(data));
