@@ -16,7 +16,7 @@ export default function FiberMap() {
   const [fibers, setFibers] = useState<Fiber[]>([]);
 
   useEffect(() => {
-    fetch("https://fibermanager.onrender.com") // ✅ Replace with your actual Render backend URL
+    fetch("https://fibermanager.onrender.com/api/fibers") // API route
       .then((res) => res.json())
       .then((data: Fiber[]) => setFibers(data));
   }, []);
